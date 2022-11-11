@@ -1,11 +1,11 @@
-const express = require("express")
-const db = require("../db/knex")
+const express = require("express");
+const db = require("../db/knex");
 
 function setupServer () {
   const app = express();
 
 
-  app.use(express.json())
+  app.use(express.json());
 
 
   app.get("/", (req, res) => {
