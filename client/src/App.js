@@ -12,9 +12,13 @@ function App() {
 
   },[])
 
-  async function getStudents (){
-    const students = await axios.get("http://localhost:4000/testdb");
-    console.log (students)
+  async function getStudents () {
+    try{
+      const students = await axios.get("/testdb");
+      console.log (students)
+    } catch (error){
+      console.log (error)
+    }
   }
 
 

@@ -1,5 +1,7 @@
 const express = require("express");
 const db = require("../db/knex");
+require ("dotenv").config();
+
 
 function setupServer () {
   const app = express();
@@ -26,6 +28,7 @@ function setupServer () {
     }
   });
 
+  
 
   return app;
 }
