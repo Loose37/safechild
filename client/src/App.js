@@ -15,7 +15,7 @@ function App() {
   async function getStudents () {
     try{
       const students = await axios.get("/testdb");
-      console.log (students)
+      console.log (students.data)
     } catch (error){
       console.log (error)
     }
