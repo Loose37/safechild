@@ -11,7 +11,6 @@
     "migrate": "knex migrate:latest",
     "make:seed": "knex seed:make",
     "seed": "knex seed:run"
-    
   },
   "keywords": [],
   "author": "",

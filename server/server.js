@@ -1,12 +1,13 @@
 const express = require("express");
 const db = require("../db/knex");
 require ("dotenv").config();
+const path = require("path");
 
 
 function setupServer () {
   const app = express();
 
-
+  app.use(express.static(path.resolve(__dirname,"../client/build")))
   app.use(express.json());
 
 
