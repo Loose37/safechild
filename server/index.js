@@ -6,6 +6,7 @@ const server = setupServer();
 (async()=>{
   try{
     await db.migrate.latest();
+    await db.seed.run();
     server.listen(PORT, ()=>{
       console.log(`hello from your server @ http://localhost:${PORT}`);
     });
