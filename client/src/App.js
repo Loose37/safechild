@@ -1,11 +1,21 @@
 import { useState,useEffect } from 'react';
 import axios from "axios"
 import './App.css';
-
+import {createUserWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
+import {auth}from "./firebase-config";
 
 
 function App() {
-  const [students,setStudents] = useState([])
+  const [students,setStudents] = useState([]);
+  const [registerEmail,setRegisterEmail] = useState("");
+  const [registerPassword,setRegisterPassword] = useState("");
+  const [loginEmail,setLoginEmail] = useState("");
+  const [loginPassword,setLoginPassword] = useState("");
+  const [user,setUser] = useState({})
+
+  onAuthStateChanged(auth,(currentUser) => {
+    setUser(currentUser)
+  })
 
   useEffect(()=>{
     getStudents();
@@ -21,12 +31,43 @@ function App() {
     }
   }
 
+  async function register() {
+    try{
+      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+      console.log (user)
+    }catch (error){
+      console.log (error)
+    }
+
+  }
 
 
   return (
     <div className="App">
       <h1>Login page</h1>
-      
+      <div>
+
+        <h3> Register User</h3>
+        <input placeholder='Email...' onChange={(e) => {setRegisterEmail(e.target.value)}}/>
+        <input placeholder='Password...' onChange={(e) => {setRegisterPassword(e.target.value)}} />
+
+        <button onClick={register}> Create User</button>
+      </div>
+
+      <div>
+        <h3> Login</h3>
+        <input placeholder='Email...'></input>
+        <input placeholder='Password'></input>
+
+        <button> Login </button>
+      </div>
+      <div>
+        <h4> User Logged in:</h4>
+        {user.email}
+        <button> Sign Out</button>
+      </div>
+
+
     </div>
   );
 }
