@@ -1,8 +1,9 @@
 import { useState,useEffect } from 'react';
 import axios from "axios"
 import './App.css';
-import {createUserWithEmailAndPassword, onAuthStateChanged} from "firebase/auth";
+import {createUserWithEmailAndPassword, onAuthStateChanged, signOut} from "firebase/auth";
 import {auth}from "./firebase-config";
+import { async } from '@firebase/util';
 
 
 function App() {
@@ -29,7 +30,15 @@ function App() {
     } catch (error){
       console.log (error)
     }
-  }
+;  }
+
+  async function logout () {
+    try{
+      await signOut(auth);
+    } catch (error){
+      console.log (error)
+    }
+  };
 
   async function register() {
     try{
@@ -38,8 +47,7 @@ function App() {
     }catch (error){
       console.log (error)
     }
-
-  }
+  };
 
 
   return (
@@ -63,8 +71,8 @@ function App() {
       </div>
       <div>
         <h4> User Logged in:</h4>
-        {user.email}
-        <button> Sign Out</button>
+        {user.email ? user.email : `No user logged in yet` }
+        <button onClick={logout}> Sign Out</button>
       </div>
 
 
