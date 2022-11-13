@@ -40,7 +40,7 @@ function App() {
     }
   };
 
-  async function register() {
+  async function register() { // creates account AND logs in automatically.
     try{
       const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
       console.log (user)
@@ -71,7 +71,7 @@ function App() {
       </div>
       <div>
         <h4> User Logged in:</h4>
-        {user.email ? user.email : `No user logged in yet` }
+        {user ? user.email : `No user logged in yet` }
         <button onClick={logout}> Sign Out</button>
       </div>
 
