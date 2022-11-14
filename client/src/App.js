@@ -14,59 +14,43 @@ function App() {
   const [students,setStudents] = useState([]);
   // const [registerEmail,setRegisterEmail] = useState("");
   // const [registerPassword,setRegisterPassword] = useState("");
-  // const [loginEmail,setLoginEmail] = useState("");
-  // const [loginPassword,setLoginPassword] = useState("");
   const [user,setUser] = useState({})
-
-//   useEffect(() => {
-//     onAuthStateChanged(auth, (currentUser) => {
-//         setUser(currentUser);
-//     });
-
-//   }, [])
+  const [role,setRole] = useState("")
+  const [allRoles,setAllRoles] = useState([])
 
 
 
   useEffect(() => {
     getStudents();
+    getAllRoles();
 
-  },[])
+  },[]);
+
+  console.log (students,allRoles)
 
  
 
   async function getStudents () {
     try{
       const students = await axios.get("/testdb");
-      console.log (students.data);
+      // console.log (students.data);
+      setStudents(students.data)
+
     } catch (error){
       console.log (error);
     }
-  }
+  };
 
-//   async function logout () {
-//     try{
-//       await signOut(auth);
-//     } catch (error){
-//       console.log (error);
-//     }
-//   };
+  async function getAllRoles () {
+    try{
+      const fetched = await axios.get("/roles");
+      const Allroles = fetched.data;
+      setAllRoles(Allroles);
+    }catch (error){
+      console.log (error);
+    }
+  };
 
-//   async function register() { // creates account AND logs in automatically.
-//     try{
-//       const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
-//       console.log (user);
-//     }catch (error){
-//       console.log (error);
-//     }
-//   };
-
-//   async function login() {
-//     try{
-//       await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-//     }catch (error){
-//       console.log (error);
-//     }
-//   };
 
 
   return (
@@ -76,10 +60,28 @@ function App() {
         <Routes>
 
           <Route path="/" element={<Login
+          user={user}
+          setUser={setUser}
+          role={role}
+          setRole={setRole}
+          allRoles={allRoles}
+          
         
           />} />
-          <Route path="/parents" element={<Parentspage/>} />
-          <Route path="/staff" element={<Staffpage/>} />
+          <Route path="/parents" element={<Parentspage
+          user={user}
+          setUser={setUser}
+          role={role}
+          setRole={setRole}
+          
+          />} />
+          <Route path="/staff" element={<Staffpage
+          user={user}
+          setUser={setUser}
+          role={role}
+          setRole={setRole}
+          
+          />} />
 
           
         </Routes>

@@ -1,10 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth";
 import {auth} from "../firebase-config";
-import { async } from '@firebase/util';
-import {db} from "../firebase-config"
 import { Navigate, useNavigate } from 'react-router-dom';
-import { doc, setDoc } from "firebase/firestore"; 
 import axios from 'axios';
 
 
@@ -12,50 +9,46 @@ import axios from 'axios';
 
 
 
-export function Login () {
+export function Login (props) {
+const {user,setUser,role,setRole,allRoles} = props
+  
 
-  // const [registerEmail,setRegisterEmail] = useState("");
+  // const [registerEmail,setRegisterEmail] = useState("");   
   // const [registerPassword,setRegisterPassword] = useState("");
-  const [loginEmail,setLoginEmail] = useState("");
+  const [loginEmail,setLoginEmail] = useState("");  
   const [loginPassword,setLoginPassword] = useState("");
-  const [user,setUser] = useState({})
-  const [role,setRole] = useState("")
-  const navigate = useNavigate();
-
+  const navigate = useNavigate();                          
 
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       // getCurrentUserRole();
-      
     })
   },[]);
   
   
 
+  // async function getCurrentUserRole () {
+  //   try{
+  //     const userRoles = await axios.get("/roles");
+  //     // console.log (userRoles.data)
+  //     const fetchedUsers = userRoles.data;
+  //     // console.log (fetchedUsers)
+  //     // fetchedUsers.map((x)=>console.log (x.email))
+  //     fetchedUsers.map((fetchedUser)=>{
+  //       if (fetchedUser.email === user.email){
+  //       // console.log (user.email)                            //if no console.log it breaks!
+  //       setRole(fetchedUser.role)
+  //       // console.log (role)
+  //       }
+  //     });
+  //   }catch(error){
+  //     console.log (error);
+  //   }
+  // };
 
- 
-  async function getCurrentUserRole () {
-    try{
-      const userRoles = await axios.get("/roles");
-      // console.log (userRoles.data)
-      const fetchedUsers = userRoles.data;
-      console.log (fetchedUsers)
-      // fetchedUsers.map((x)=>console.log (x.email))
-      fetchedUsers.map((fetchedUser)=>{
-        if (fetchedUser.email === user.email){
-        console.log (user.email)                            //if no console.log it breaks!
-        setRole(fetchedUser.role)
-        console.log (role)
-        }
-      });
-    }catch(error){
-      console.log (error);
-    }
-  };
-
-  getCurrentUserRole()
+  // getCurrentUserRole()
 
   function handleNavigation(){
     if (role === "staff"){
@@ -67,7 +60,6 @@ export function Login () {
     
   }
    
-
   async function logout () {
     try{
       await signOut(auth);
@@ -94,7 +86,7 @@ export function Login () {
   };
   
   if (user){
-    console.log (user.email)
+    // console.log (user.email)
   }
   
 
@@ -129,7 +121,10 @@ export function Login () {
           <h4> User Logged in:</h4>
           {user ? user.email : `No user logged in yet  ` }
           <div>
-            <button onClick={logout}
+            <button onClick={(e) => {
+              logout();
+              setRole("");
+            }}
             > Sign Out</button>
           </div>
         </div>
