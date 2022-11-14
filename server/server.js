@@ -29,6 +29,23 @@ function setupServer () {
     }
   });
 
+
+  app.get("/roles", async (req, res) => {
+    try{
+      const roles = await db("roles")
+      .select("*")
+      .timeout(1500);
+      roles.length > 0
+      ? res.status(200).send(roles)
+      : res.status(404).send("no roles found");
+    }catch(err){
+      res.status(500).send(err);
+    }
+  });
+
+
+
+
   
 
   return app;

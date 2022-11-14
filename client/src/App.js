@@ -1,5 +1,5 @@
 import { useState,useEffect } from 'react';
-// import axios from "axios"
+import axios from "axios"
 import './App.css';
 // import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth";
 // import {auth}from "./firebase-config";
@@ -11,7 +11,7 @@ import { Staffpage } from './components/Staffpage';
 
 
 function App() {
-  // const [students,setStudents] = useState([]);
+  const [students,setStudents] = useState([]);
   // const [registerEmail,setRegisterEmail] = useState("");
   // const [registerPassword,setRegisterPassword] = useState("");
   // const [loginEmail,setLoginEmail] = useState("");
@@ -27,19 +27,19 @@ function App() {
 
 
 
-//   useEffect(()=>{
-//     getStudents();
+  useEffect(()=>{
+    getStudents();
 
-//   },[])
+  },[])
 
-//   async function getStudents () {
-//     try{
-//       const students = await axios.get("/testdb");
-//       console.log (students.data);
-//     } catch (error){
-//       console.log (error);
-//     }
-// ;  }
+  async function getStudents () {
+    try{
+      const students = await axios.get("/testdb");
+      console.log (students.data);
+    } catch (error){
+      console.log (error);
+    }
+  }
 
 //   async function logout () {
 //     try{
