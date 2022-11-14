@@ -78,8 +78,11 @@ export function Login () {
       console.log (error);
     }
   };
+  
+  if (user){
 
-  console.log (user.email)
+    console.log (user.email)
+  }
 
 
   return (
