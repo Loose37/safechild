@@ -16,7 +16,7 @@ function App() {
   // const [registerPassword,setRegisterPassword] = useState("");
   // const [loginEmail,setLoginEmail] = useState("");
   // const [loginPassword,setLoginPassword] = useState("");
-  // const [user,setUser] = useState({})
+  const [user,setUser] = useState({})
 
 //   useEffect(() => {
 //     onAuthStateChanged(auth, (currentUser) => {
@@ -27,10 +27,12 @@ function App() {
 
 
 
-  useEffect(()=>{
+  useEffect(() => {
     getStudents();
 
   },[])
+
+ 
 
   async function getStudents () {
     try{
@@ -69,11 +71,13 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Home Page</h1>
+      {/* <h1>Home Page</h1> */}
       <BrowserRouter>
         <Routes>
 
-          <Route path="/" element={<Login/>} />
+          <Route path="/" element={<Login
+        
+          />} />
           <Route path="/parents" element={<Parentspage/>} />
           <Route path="/staff" element={<Staffpage/>} />
 

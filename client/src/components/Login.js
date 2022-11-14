@@ -22,37 +22,51 @@ export function Login () {
   const [role,setRole] = useState("")
   const navigate = useNavigate();
 
+
+
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-        getCurrentUserRole()
-    });
+      setUser(currentUser);
+      // getCurrentUserRole();
+      
+    })
+  },[]);
+  
+  
 
-  }, [])
 
  
-
-
   async function getCurrentUserRole () {
     try{
-      const userRoles = await axios.get("/roles")
+      const userRoles = await axios.get("/roles");
       // console.log (userRoles.data)
-      const fetchedUsers = userRoles.data
-      // console.log (fetchedUsers)
+      const fetchedUsers = userRoles.data;
+      console.log (fetchedUsers)
       // fetchedUsers.map((x)=>console.log (x.email))
       fetchedUsers.map((fetchedUser)=>{
-         if (fetchedUser.email === user.email){
-          console.log (user.email)
-          setRole(fetchedUser.role)
-         }});
-      
+        if (fetchedUser.email === user.email){
+        console.log (user.email)                            //if no console.log it breaks!
+        setRole(fetchedUser.role)
+        console.log (role)
+        }
+      });
     }catch(error){
       console.log (error);
     }
   };
 
-  console.log (role)
+  getCurrentUserRole()
 
+  function handleNavigation(){
+    if (role === "staff"){
+      navigate("/staff")
+    }
+    if (role === "parent"){
+      navigate("/parents")
+    }
+    
+  }
+   
 
   async function logout () {
     try{
@@ -80,15 +94,15 @@ export function Login () {
   };
   
   if (user){
-
     console.log (user.email)
   }
-
+  
 
   return (
     <div>
       
-      <h1>This is the Login page</h1>
+      <h1>Welcome to Safechild</h1>
+      <h3>Please login with the email you have registered with the school</h3>
         {/* <div>
 
           <h3> Register User</h3>
@@ -104,14 +118,19 @@ export function Login () {
           <input placeholder='Email...'onChange={(e) => {setLoginEmail(e.target.value)}} ></input>
           <input placeholder='Password' onChange={(e) => {setLoginPassword(e.target.value)}}></input>
           <div>
-            <button onClick={login}> Login </button>
+            <button onClick={(e)=>{
+              login();
+              handleNavigation();
+            }}
+            > Login </button>
           </div>
         </div>
         <div>
           <h4> User Logged in:</h4>
           {user ? user.email : `No user logged in yet  ` }
           <div>
-            <button onClick={logout}> Sign Out</button>
+            <button onClick={logout}
+            > Sign Out</button>
           </div>
         </div>
 
