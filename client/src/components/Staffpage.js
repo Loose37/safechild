@@ -1,6 +1,8 @@
 
 
-export function Staffpage () {
+export function Staffpage (props) {
+
+
 
 
 

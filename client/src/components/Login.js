@@ -27,7 +27,12 @@ const {user,setUser,role,setRole,allRoles} = props
     })
   },[]);
   
+  useEffect(() => {
+    handleUserRoleCheck()
+
+  },[user])
   
+  console.log (role)
 
   // async function getCurrentUserRole () {
   //   try{
@@ -50,15 +55,27 @@ const {user,setUser,role,setRole,allRoles} = props
 
   // getCurrentUserRole()
 
+  function handleUserRoleCheck (){
+    allRoles.map ((fetchedUser) => {
+      console.log (fetchedUser)
+      if (user && fetchedUser.email === user.email ){
+        setRole(fetchedUser.role)
+        console.log (role)
+      }
+    })
+  }
+
   function handleNavigation(){
     if (role === "staff"){
-      navigate("/staff")
+      navigate("/staff");
     }
     if (role === "parent"){
-      navigate("/parents")
+      navigate("/parents");
     }
-    
-  }
+    if (!role){
+      console.log ("No role assigned!")
+    }
+  };
    
   async function logout () {
     try{
@@ -87,7 +104,7 @@ const {user,setUser,role,setRole,allRoles} = props
   
   if (user){
     // console.log (user.email)
-  }
+  };
   
 
   return (
@@ -124,6 +141,7 @@ const {user,setUser,role,setRole,allRoles} = props
             <button onClick={(e) => {
               logout();
               setRole("");
+              handleNavigation();
             }}
             > Sign Out</button>
           </div>
