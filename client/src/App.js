@@ -1,30 +1,31 @@
 import { useState,useEffect } from 'react';
 import axios from "axios"
 import './App.css';
-import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth";
-import {auth}from "./firebase-config";
-import { async } from '@firebase/util';
+// import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth";
+// import {auth}from "./firebase-config";
+// import { async } from '@firebase/util';
+import {BrowserRouter, Route, Routes} from "react-router-dom"
+import {Login} from './components/Login';
+import { Parentspage } from './components/Parentspage';
+import { Staffpage } from './components/Staffpage';
 
 
 function App() {
   const [students,setStudents] = useState([]);
-  const [registerEmail,setRegisterEmail] = useState("");
-  const [registerPassword,setRegisterPassword] = useState("");
-  const [loginEmail,setLoginEmail] = useState("");
-  const [loginPassword,setLoginPassword] = useState("");
-  const [user,setUser] = useState({})
+  // const [registerEmail,setRegisterEmail] = useState("");
+  // const [registerPassword,setRegisterPassword] = useState("");
+  // const [loginEmail,setLoginEmail] = useState("");
+  // const [loginPassword,setLoginPassword] = useState("");
+  // const [user,setUser] = useState({})
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-    });
+//   useEffect(() => {
+//     onAuthStateChanged(auth, (currentUser) => {
+//         setUser(currentUser);
+//     });
 
-}, [])
+//   }, [])
 
 
-  // onAuthStateChanged(auth,(currentUser) => {
-  //   setUser(currentUser)
-  // })
 
   useEffect(()=>{
     getStudents();
@@ -38,60 +39,49 @@ function App() {
     } catch (error){
       console.log (error);
     }
-;  }
+  }
 
-  async function logout () {
-    try{
-      await signOut(auth);
-    } catch (error){
-      console.log (error);
-    }
-  };
+//   async function logout () {
+//     try{
+//       await signOut(auth);
+//     } catch (error){
+//       console.log (error);
+//     }
+//   };
 
-  async function register() { // creates account AND logs in automatically.
-    try{
-      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
-      console.log (user);
-    }catch (error){
-      console.log (error);
-    }
-  };
+//   async function register() { // creates account AND logs in automatically.
+//     try{
+//       const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+//       console.log (user);
+//     }catch (error){
+//       console.log (error);
+//     }
+//   };
 
-  async function login() {
-    try{
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
-    }catch (error){
-      console.log (error);
-    }
-  };
+//   async function login() {
+//     try{
+//       await signInWithEmailAndPassword(auth, loginEmail, loginPassword)
+//     }catch (error){
+//       console.log (error);
+//     }
+//   };
 
 
   return (
     <div className="App">
-      <h1>Login page</h1>
-      <div>
+      <h1>Home Page</h1>
+      <BrowserRouter>
+        <Routes>
 
-        <h3> Register User</h3>
-        <input placeholder='Email...' onChange={(e) => {setRegisterEmail(e.target.value)}}/>
-        <input placeholder='Password...' onChange={(e) => {setRegisterPassword(e.target.value)}} />
+          <Route path="/" element={<Login/>} />
+          <Route path="/parents" element={<Parentspage/>} />
+          <Route path="/staff" element={<Staffpage/>} />
 
-        <button onClick={register}> Create User</button>
-      </div>
-
-      <div>
-        <h3> Login</h3>
-        <input placeholder='Email...'onChange={(e) => {setLoginEmail(e.target.value)}} ></input>
-        <input placeholder='Password' onChange={(e) => {setLoginPassword(e.target.value)}}></input>
-
-        <button onClick={login}> Login </button>
-      </div>
-      <div>
-        <h4> User Logged in:</h4>
-        {user ? user.email : `No user logged in yet  ` }
-        <button onClick={logout}> Sign Out</button>
-      </div>
-
-
+          
+        </Routes>
+      
+      </BrowserRouter>
+    
     </div>
   );
 }
