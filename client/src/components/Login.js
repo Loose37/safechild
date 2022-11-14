@@ -23,7 +23,7 @@ const {user,setUser,role,setRole,allRoles} = props
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-      // getCurrentUserRole();
+    
     })
   },[]);
   
@@ -34,27 +34,7 @@ const {user,setUser,role,setRole,allRoles} = props
   
   console.log (role)
 
-  // async function getCurrentUserRole () {
-  //   try{
-  //     const userRoles = await axios.get("/roles");
-  //     // console.log (userRoles.data)
-  //     const fetchedUsers = userRoles.data;
-  //     // console.log (fetchedUsers)
-  //     // fetchedUsers.map((x)=>console.log (x.email))
-  //     fetchedUsers.map((fetchedUser)=>{
-  //       if (fetchedUser.email === user.email){
-  //       // console.log (user.email)                            //if no console.log it breaks!
-  //       setRole(fetchedUser.role)
-  //       // console.log (role)
-  //       }
-  //     });
-  //   }catch(error){
-  //     console.log (error);
-  //   }
-  // };
-
-  // getCurrentUserRole()
-
+  
   function handleUserRoleCheck (){
     allRoles.map ((fetchedUser) => {
       console.log (fetchedUser)
@@ -100,10 +80,6 @@ const {user,setUser,role,setRole,allRoles} = props
     }catch (error){
       console.log (error);
     }
-  };
-  
-  if (user){
-    // console.log (user.email)
   };
   
 
