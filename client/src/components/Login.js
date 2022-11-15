@@ -115,7 +115,7 @@ const {user,setUser,role,setRole,allRoles} = props
             <button onClick={(e) => {
               logout();
               setRole("");
-              handleNavigation();
+              // handleNavigation();
             }}
             > Sign Out</button>
           </div>

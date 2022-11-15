@@ -12,7 +12,7 @@ function setupServer () {
 
 
   app.get("/", (req, res) => {
-    res.status(200).send("this is your test homepage");
+    res.status(200).send("Your server is working!");
   });
   
   
@@ -44,22 +44,18 @@ function setupServer () {
   });
 
 
-  // app.get("/routes", async (req, res) => {
-  //   try{
-  //     const route1 = await db("route_1")
-  //     .join()
-  //     .select("student_unique_ID")
-  //     .timeout(1500);
-  //     const route2 = await db ("route_2")
-  //     .select("student_unique_ID")
-  //     .timeout(1500);
-  //     route2.length > 0
-  //     ? res.status(200).send(route1,route2)
-  //     :res.status(400).send("no routes found")
-  //   }catch(error){
-  //     res.status(500).send(err);
-  //   }
-  // });
+  app.get("/routes", async (req, res) => {
+    try{
+      const routes = await db("routes")
+      .select("all_routes")
+      .timeout(1500)
+      routes.length > 0
+      ? res.status(200).send(routes)
+      :res.status(400).send("no routes found")
+    }catch(error){
+      res.status(500).send(err);
+    }
+  });
 
 
 
