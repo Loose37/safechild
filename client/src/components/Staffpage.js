@@ -8,9 +8,9 @@ import axios from 'axios';
 export function Staffpage (props) {
   const {user,setUser} = props;
   const[allRoutes,setAllRoutes] = useState([])
-  const[selecteChild,setSelectedChild] = useState()
+  const[selectedChild,setSelectedChild] = useState()
   const[selectedChildren,setSelectedChildren] = useState()
-  const[selectedRoute,setSelectedRoute] = useState("")
+  const[selectedRoute,setSelectedRoute] = useState("route_1")
 
 const current = new Date()
 const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
@@ -66,8 +66,9 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
     setSelectedRoute("route_2")
   };
 
+  
 
-  console.log ("🌍" ,selectedRoute)
+  console.log ("🌍" ,selectedChildren,selectedChild)
 
 
 
@@ -92,18 +93,26 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
         
         <h1>Route events</h1>
         <div className='children_gallery'>
-          <h2>Children on {selectedRoute}</h2>
+          <h2>Children on Route {selectedRoute}</h2>
           <div className='children_names_container'>
             <div className='children_name_list'>
               insert names list
-              {selectedChildren.map(child => <p>{`${child.first_name} ${child.last_name} ${child.image} `}</p>)}
-
+              {selectedChildren.map(child => 
+                <div>              
+                  <p>{`${child.first_name} ${child.last_name} ${child.image} `}</p>
+                  <button className='select_child_button' onClick={(e)=>setSelectedChild(child)}>Select this child</button>
+                </div>  
+              )}
             </div>
+            
           </div>
         </div>
 
         <div className='actions_gallery'>
+
           insert selected child name + img + actions
+          {<p>{`${selectedChild.first_name} ${selectedChild.last_name} ${selectedChild.image}`}</p>}
+
         </div>
 
 
