@@ -1,10 +1,7 @@
 import React, { useState,useEffect } from 'react';
 import {createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut} from "firebase/auth";
 import {auth} from "../firebase-config";
-import { async } from '@firebase/util';
-import {db} from "../firebase-config"
 import { Navigate, useNavigate } from 'react-router-dom';
-import { doc, setDoc } from "firebase/firestore"; 
 import axios from 'axios';
 
 
@@ -12,48 +9,52 @@ import axios from 'axios';
 
 
 
-export function Login () {
+export function Login (props) {
+const {user,setUser,role,setRole,allRoles} = props
+  
 
-  // const [registerEmail,setRegisterEmail] = useState("");
-  // const [registerPassword,setRegisterPassword] = useState("");
-  const [loginEmail,setLoginEmail] = useState("");
+  const [registerEmail,setRegisterEmail] = useState("");   
+  const [registerPassword,setRegisterPassword] = useState("");
+  const [loginEmail,setLoginEmail] = useState("");  
   const [loginPassword,setLoginPassword] = useState("");
-  const [user,setUser] = useState({})
-  const [role,setRole] = useState("")
-  const navigate = useNavigate();
+  const navigate = useNavigate();                          
+
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-        getCurrentUserRole()
+      setUser(currentUser);
+    })
+  },[]);
+  
+  useEffect(() => {
+    handleUserRoleCheck()
+  },[user]);
+  
+  console.log (role);
+
+  
+  function handleUserRoleCheck (){
+    allRoles.map ((fetchedUser) => {
+      console.log (fetchedUser)
+      if (user && fetchedUser.email === user.email ){
+        setRole(fetchedUser.role)
+        console.log (role)
+      }
     });
-
-  }, [])
-
- 
-
-
-  async function getCurrentUserRole () {
-    try{
-      const userRoles = await axios.get("/roles")
-      // console.log (userRoles.data)
-      const fetchedUsers = userRoles.data
-      // console.log (fetchedUsers)
-      // fetchedUsers.map((x)=>console.log (x.email))
-      fetchedUsers.map((fetchedUser)=>{
-         if (fetchedUser.email === user.email){
-          console.log (user.email)
-          setRole(fetchedUser.role)
-         }});
-      
-    }catch(error){
-      console.log (error);
-    }
   };
 
-  console.log (role)
-
-
+  function handleNavigation(){
+    if (role === "staff"){
+      navigate("/staff");
+    }
+    if (role === "parent"){
+      navigate("/parents");
+    }
+    if (!role){
+      console.log ("No role assigned!")
+    }
+  };
+   
   async function logout () {
     try{
       await signOut(auth);
@@ -62,14 +63,14 @@ export function Login () {
     }
   };
 
-  // async function register() { // creates account AND logs in automatically.
-  //   try{
-  //     const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
-  //     console.log (user);
-  //   }catch (error){
-  //     console.log (error);
-  //   }
-  // };
+  async function register() { // creates account AND logs in automatically.
+    try{
+      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+      console.log (user);
+    }catch (error){
+      console.log (error);
+    }
+  };
 
   async function login() {
     try{
@@ -79,16 +80,12 @@ export function Login () {
     }
   };
   
-  if (user){
-
-    console.log (user.email)
-  }
-
 
   return (
     <div>
       
-      <h1>This is the Login page</h1>
+      <h1>Welcome to Safechild</h1>
+      <h3>Please login with the email you have registered with the school</h3>
         {/* <div>
 
           <h3> Register User</h3>
@@ -104,14 +101,23 @@ export function Login () {
           <input placeholder='Email...'onChange={(e) => {setLoginEmail(e.target.value)}} ></input>
           <input placeholder='Password' onChange={(e) => {setLoginPassword(e.target.value)}}></input>
           <div>
-            <button onClick={login}> Login </button>
+            <button onClick={(e)=>{
+              login();
+              handleNavigation();
+            }}
+            > Login </button>
           </div>
         </div>
         <div>
           <h4> User Logged in:</h4>
           {user ? user.email : `No user logged in yet  ` }
           <div>
-            <button onClick={logout}> Sign Out</button>
+            <button onClick={(e) => {
+              logout();
+              setRole("");
+              handleNavigation();
+            }}
+            > Sign Out</button>
           </div>
         </div>
 
