@@ -59,8 +59,30 @@ function setupServer () {
 
 
 
+  app.post("/children", async (req,res) => {
+    try{
+      const route = req.body.route;
+      console.log(route)
+      if (route === "route_1"){
+        const childrenData = await db("students")
+        .where({route:"route_1"})
+        .select("*")
+        res.status(200).send(childrenData)
+      }
+      if (route === "route_2"){
+        const childrenData = await db("students")
+        .where({route:"route_2"})
+        .select("*")
+        res.status(200).send(childrenData)
+      }else{
+      res.status(400).send("something is wrong")
+      }
+    } catch (error) {
+      console.log (error)
+    }
+  })
 
-  
+
 
   return app;
 }
