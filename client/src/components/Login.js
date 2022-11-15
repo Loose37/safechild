@@ -13,8 +13,8 @@ export function Login (props) {
 const {user,setUser,role,setRole,allRoles} = props
   
 
-  // const [registerEmail,setRegisterEmail] = useState("");   
-  // const [registerPassword,setRegisterPassword] = useState("");
+  const [registerEmail,setRegisterEmail] = useState("");   
+  const [registerPassword,setRegisterPassword] = useState("");
   const [loginEmail,setLoginEmail] = useState("");  
   const [loginPassword,setLoginPassword] = useState("");
   const navigate = useNavigate();                          
@@ -23,16 +23,14 @@ const {user,setUser,role,setRole,allRoles} = props
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
-    
     })
   },[]);
   
   useEffect(() => {
     handleUserRoleCheck()
-
-  },[user])
+  },[user]);
   
-  console.log (role)
+  console.log (role);
 
   
   function handleUserRoleCheck (){
@@ -42,8 +40,8 @@ const {user,setUser,role,setRole,allRoles} = props
         setRole(fetchedUser.role)
         console.log (role)
       }
-    })
-  }
+    });
+  };
 
   function handleNavigation(){
     if (role === "staff"){
@@ -65,14 +63,14 @@ const {user,setUser,role,setRole,allRoles} = props
     }
   };
 
-  // async function register() { // creates account AND logs in automatically.
-  //   try{
-  //     const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
-  //     console.log (user);
-  //   }catch (error){
-  //     console.log (error);
-  //   }
-  // };
+  async function register() { // creates account AND logs in automatically.
+    try{
+      const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword)
+      console.log (user);
+    }catch (error){
+      console.log (error);
+    }
+  };
 
   async function login() {
     try{

@@ -44,8 +44,8 @@ function App() {
   async function getAllRoles () {
     try{
       const fetched = await axios.get("/roles");
-      const Allroles = fetched.data;
-      setAllRoles(Allroles);
+      const allRoles = fetched.data;
+      setAllRoles(allRoles);
     }catch (error){
       console.log (error);
     }
