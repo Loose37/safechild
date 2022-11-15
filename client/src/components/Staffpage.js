@@ -10,7 +10,7 @@ export function Staffpage (props) {
   const[allRoutes,setAllRoutes] = useState([])
   const[selecteChild,setSelectedChild] = useState()
   const[selectedChildren,setSelectedChildren] = useState()
-  const[selectedRoute,setSelectedRoute] = useState("route_1")
+  const[selectedRoute,setSelectedRoute] = useState("")
 
 const current = new Date()
 const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
@@ -48,7 +48,7 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
       const children = fetchedChildren.data
       console.log (children)
       setSelectedChildren(children);
-      console.log (children)
+      console.log (selectedChildren)
     }catch (error) {
       console.log (error)
     }
@@ -92,14 +92,12 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
         
         <h1>Route events</h1>
         <div className='children_gallery'>
-          <h2>Children on this Route</h2>
+          <h2>Children on {selectedRoute}</h2>
           <div className='children_names_container'>
             <div className='children_name_list'>
               insert names list
+              {selectedChildren.map(child => <p>{`${child.first_name} ${child.last_name} ${child.image} `}</p>)}
 
-            </div>
-            <div className='children_images'>
-              insert images list
             </div>
           </div>
         </div>
