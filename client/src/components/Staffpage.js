@@ -2,8 +2,7 @@ import React, { useState,useEffect, useRef } from 'react';
 import {auth} from "../firebase-config";
 import {onAuthStateChanged,signOut} from "firebase/auth"
 import axios from 'axios';
-import { Timestamp } from 'firebase/firestore';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 export function Staffpage (props) {
@@ -40,18 +39,6 @@ export function Staffpage (props) {
       console.log (error)
     }
   };
-
-  // function handleNavigation(){
-  //   if (role === "staff"){
-  //     navigate("/staff");
-  //   }
-  //   if (role === "parent"){
-  //     navigate("/parents");
-  //   }
-  //   if (!role){
-  //     navigate ("/")
-  //   }
-  // };
 
 
   async function getAllRoutes(){
