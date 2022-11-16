@@ -3,8 +3,8 @@
  * @returns { Promise<void> }
  */
 exports.up = function(knex) {
-  return knex.schema.table('students', table => {
-    table.string("route");
+  return knex.schema.table('roles', table => {
+    table.string("studentID");
 
   });
 };
@@ -14,5 +14,5 @@ exports.up = function(knex) {
  * @returns { Promise<void> }
  */
 exports.down = function(knex) {
-  return knex.schema.dropTable("students")
+  return knex.schema.dropTable("roles")
 };

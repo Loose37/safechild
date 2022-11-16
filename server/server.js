@@ -75,10 +75,73 @@ function setupServer () {
         .select("*")
         res.status(200).send(childrenData)
       }else{
-      res.status(400).send("something is wrong")
       }
     } catch (error) {
       console.log (error)
+    }
+  })
+
+
+  app.post("/events", async (req,res) => {
+    try {
+      const route = req.body.route
+      const event = req.body.event
+      // const child = req.body.child
+      const time = req.body.time
+      const ID = req.body.ID
+
+      if(event === "got_on_bus" && route === "route_1"){
+        console.log (event,time,ID)
+        await db("route_1_events")
+        .insert({got_on_bus:true,time_when_got_on_bus:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+      if(event === "got_on_bus" && route === "route_2"){
+        console.log (event,time,ID)
+        await db("route_2_events")
+        .insert({got_on_bus:true,time_when_got_on_bus:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+      if(event === "got_off_bus" && route === "route_1"){
+        console.log (event,time,ID)
+        await db("route_1_events")
+        .insert({got_off_bus:true,time_when_got_off_bus:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+      if(event === "got_off_bus" && route === "route_2"){
+        console.log (event,time,ID)
+        await db("route_2_events")
+        .insert({got_off_bus:true,time_when_got_off_bus:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+      if(event === "got_to_class" && route === "route_1"){
+        console.log (event,time,ID)
+        await db("route_1_events")
+        .insert({got_to_class:true,time_when_got_to_class:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+      if(event === "got_to_class" && route === "route_2"){
+        console.log (event,time,ID)
+        await db("route_2_events")
+        .insert({got_to_class:true,time_when_got_to_class:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+      if(event === "got_out_of_class" && route === "route_1"){
+        console.log (event,time,ID)
+        await db("route_1_events")
+        .insert({got_out_off_class:true,time_when_got_out_of_class:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+      if(event === "got_out_of_class" && route === "route_2"){
+        console.log (event,time,ID)
+        await db("route_2_events")
+        .insert({got_out_off_class:true,time_when_got_out_of_class:time,student_unique_ID:ID })
+        res.status(200).send("😎")
+      }
+
+      
+    } catch (error) {
+      console.log(error)
     }
   })
 
