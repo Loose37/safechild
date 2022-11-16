@@ -15,11 +15,13 @@ export function Staffpage (props) {
   const navigate = useNavigate();
 
   const current = new Date()  
-  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}  ${current.getHours()}:${current.getMinutes()}`;
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
+      if(!user){
+      }
     })
   },[]);
   
@@ -76,7 +78,7 @@ export function Staffpage (props) {
 
   async function childGotOnBus(){
     try {
-      const childEvent = await axios.post("/events",{event:"got_on_bus",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const childEvent = await axios.post("/events",{event:"got_on_bus", route:selectedRoute,time:date, ID:selectedChild.student_unique_ID},);  
       const res = childEvent.data
       // setResponse(res)
       console.log (res)
@@ -87,7 +89,7 @@ export function Staffpage (props) {
 
   async function childGotOffBus(){
     try {
-      const childEvent = await axios.post("/events",{event:"got_off_bus",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const childEvent = await axios.post("/events",{event:"got_off_bus", route:selectedRoute, time:date, ID:selectedChild.student_unique_ID},);  
       const res = childEvent.data
       // setResponse(res)
       console.log (res)
@@ -98,7 +100,7 @@ export function Staffpage (props) {
 
   async function childGotToClass(){
     try {
-      const childEvent = await axios.post("/events",{event:"got_to_class",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const childEvent = await axios.post("/events",{event:"got_to_class", route:selectedRoute, time:date, ID:selectedChild.student_unique_ID},);  
       const res = childEvent.data
       // setResponse(res)
       console.log (res)
@@ -108,7 +110,7 @@ export function Staffpage (props) {
   };
   async function childGotOutOfClass(){
     try {
-      const childEvent = await axios.post("/events",{event:"got_out_of_class",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const childEvent = await axios.post("/events",{event:"got_out_of_class", route:selectedRoute, time:date, ID:selectedChild.student_unique_ID},);  
       const res = childEvent.data
       // setResponse(res)
       console.log (res)
@@ -122,6 +124,7 @@ export function Staffpage (props) {
 console.log (role)
   return(
     <div>
+
       <h1>Welcome {user.email} you are signed in as Staff</h1>
       <button onClick={(e)=>{
         navigate("/")
@@ -149,7 +152,7 @@ console.log (role)
             <div className='children_name_list'>
               {selectedChildren.map(child => 
                 <div>              
-                  <p>{`${child.first_name} ${child.last_name} ${child.image} `}</p>
+                  <p className='child_details'>{`${child.first_name} ${child.last_name} ${child.image} `}</p>
                   <button className='select_child_button' onClick={(e)=>setSelectedChild(child)}>Select this child</button>
                 </div>  
               )}

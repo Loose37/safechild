@@ -69,6 +69,7 @@ function App() {
           setUser={setUser}
           role={role}
           setRole={setRole}
+          allRoles={allRoles}
           
           />} />
           <Route path="/staff" element={<Staffpage
