@@ -1,18 +1,19 @@
 import React, { useState,useEffect, useRef } from 'react';
 import {auth} from "../firebase-config";
 import {onAuthStateChanged} from "firebase/auth"
-import { async } from '@firebase/util';
 import axios from 'axios';
+import { Timestamp } from 'firebase/firestore';
 
 
 export function Staffpage (props) {
   const {user,setUser} = props;
   const[allRoutes,setAllRoutes] = useState([])
-  const[selectedChild,setSelectedChild] = useState()
-  const[selectedChildren,setSelectedChildren] = useState()
+  const[selectedChild,setSelectedChild] = useState("")
+  const[selectedChildren,setSelectedChildren] = useState([])
   const[selectedRoute,setSelectedRoute] = useState("route_1")
+  const[response,setResponse] =useState("")
 
-const current = new Date()
+const current = new Date()  
 const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
   useEffect(() => {
@@ -46,17 +47,13 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
     try{
       const fetchedChildren = await axios.post("/children", {route:selectedRoute})
       const children = fetchedChildren.data
-      console.log (children)
+      // console.log (children)
       setSelectedChildren(children);
-      console.log (selectedChildren)
+      // console.log (selectedChildren)
     }catch (error) {
       console.log (error)
     }
   }
-
-  // getAllChildren()
-
-
 
 
   function selectRoute1 (){
@@ -68,16 +65,25 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
 
   
 
-  console.log ("🌍" ,selectedChildren,selectedChild)
+  async function childGotOnBus(){
+    try {
+      const childEvent = await axios.post("/events",{event:"got_on_bus",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const res = childEvent.data
+      // setResponse(res)
+      console.log (res)
+    } catch (error) {
+      console.log (error)
+    }
+  }
 
 
 
 
   return(
     <div>
-      <h1>This is the Staff Page</h1>
+      <h1>Welcome {user.email} you are signed in as Staff</h1>
       <div className="routes_view">
-       <h1>This are your routes for {date}</h1>
+       <h3>This are your routes for {date}</h3>
        {allRoutes.map(route => <p>{route.all_routes}</p>)}
        <button className='route_1_button' onClick={(e) =>{
          selectRoute1()
@@ -89,14 +95,14 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
 
       </div>
 
+
       <div className='events_view'>
         
-        <h1>Route events</h1>
+        {/* <h1>Route events</h1> */}
         <div className='children_gallery'>
           <h2>Children on Route {selectedRoute}</h2>
           <div className='children_names_container'>
             <div className='children_name_list'>
-              insert names list
               {selectedChildren.map(child => 
                 <div>              
                   <p>{`${child.first_name} ${child.last_name} ${child.image} `}</p>
@@ -110,8 +116,12 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
 
         <div className='actions_gallery'>
 
-          insert selected child name + img + actions
+          Selected Child:
           {<p>{`${selectedChild.first_name} ${selectedChild.last_name} ${selectedChild.image}`}</p>}
+          <button onClick={(e)=>childGotOnBus()}>Child got on bus</button>
+          <button>Child got off bus</button>
+          <button>Child got to class</button>
+          <button>Child got out of class</button>
 
         </div>
 

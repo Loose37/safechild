@@ -26,9 +26,6 @@ function App() {
 
   },[]);
 
-  console.log (students,allRoles)
-
- 
 
   async function getStudents () {
     try{
@@ -50,7 +47,6 @@ function App() {
       console.log (error);
     }
   };
-
 
 
   return (
