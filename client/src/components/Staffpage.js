@@ -1,20 +1,22 @@
 import React, { useState,useEffect, useRef } from 'react';
 import {auth} from "../firebase-config";
-import {onAuthStateChanged} from "firebase/auth"
+import {onAuthStateChanged,signOut} from "firebase/auth"
 import axios from 'axios';
 import { Timestamp } from 'firebase/firestore';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 
 export function Staffpage (props) {
-  const {user,setUser} = props;
-  const[allRoutes,setAllRoutes] = useState([])
-  const[selectedChild,setSelectedChild] = useState("")
-  const[selectedChildren,setSelectedChildren] = useState([])
-  const[selectedRoute,setSelectedRoute] = useState("route_1")
-  const[response,setResponse] =useState("")
+  const {user,setUser,role} = props;
+  const[allRoutes,setAllRoutes] = useState([]);
+  const[selectedChild,setSelectedChild] = useState("");
+  const[selectedChildren,setSelectedChildren] = useState([]);
+  const[selectedRoute,setSelectedRoute] = useState("route_1");
+  const[response,setResponse] =useState("");
+  const navigate = useNavigate();
 
-const current = new Date()  
-const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+  const current = new Date()  
+  const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
 
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
@@ -22,14 +24,34 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
     })
   },[]);
   
-  
   useEffect(() => {
     getAllRoutes()
-  },[])
+  },[]);
 
   useEffect(() => {
     getAllChildren()
-  },[selectedRoute])
+  },[selectedRoute]);
+
+
+  async function logout () {
+    try{
+      await signOut(auth)
+    } catch (error){
+      console.log (error)
+    }
+  };
+
+  // function handleNavigation(){
+  //   if (role === "staff"){
+  //     navigate("/staff");
+  //   }
+  //   if (role === "parent"){
+  //     navigate("/parents");
+  //   }
+  //   if (!role){
+  //     navigate ("/")
+  //   }
+  // };
 
 
   async function getAllRoutes(){
@@ -37,9 +59,9 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
       const fetchedRoutes = await axios.get("/routes")
       const routes = fetchedRoutes.data
       // console.log ("🍎",routes)
-      setAllRoutes(routes);
+      setAllRoutes(routes)
     }catch(error){
-      console.log (error);
+      console.log (error)
     }
   };
 
@@ -48,12 +70,12 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
       const fetchedChildren = await axios.post("/children", {route:selectedRoute})
       const children = fetchedChildren.data
       // console.log (children)
-      setSelectedChildren(children);
+      setSelectedChildren(children)
       // console.log (selectedChildren)
     }catch (error) {
       console.log (error)
     }
-  }
+  };
 
 
   function selectRoute1 (){
@@ -74,14 +96,49 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
     } catch (error) {
       console.log (error)
     }
-  }
+  };
+
+  async function childGotOffBus(){
+    try {
+      const childEvent = await axios.post("/events",{event:"got_off_bus",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const res = childEvent.data
+      // setResponse(res)
+      console.log (res)
+    } catch (error) {
+      console.log (error)
+    }
+  };
+
+  async function childGotToClass(){
+    try {
+      const childEvent = await axios.post("/events",{event:"got_to_class",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const res = childEvent.data
+      // setResponse(res)
+      console.log (res)
+    } catch (error) {
+      console.log (error)
+    }
+  };
+  async function childGotOutOfClass(){
+    try {
+      const childEvent = await axios.post("/events",{event:"got_out_of_class",route:selectedRoute,time:current,ID:selectedChild.student_unique_ID},);  
+      const res = childEvent.data
+      // setResponse(res)
+      console.log (res)
+    } catch (error) {
+      console.log (error)
+    }
+  };
 
 
 
-
+console.log (role)
   return(
     <div>
       <h1>Welcome {user.email} you are signed in as Staff</h1>
+      <button onClick={(e)=>{
+        navigate("/")
+        }}>Back to Login Page</button>
       <div className="routes_view">
        <h3>This are your routes for {date}</h3>
        {allRoutes.map(route => <p>{route.all_routes}</p>)}
@@ -119,9 +176,9 @@ const date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear
           Selected Child:
           {<p>{`${selectedChild.first_name} ${selectedChild.last_name} ${selectedChild.image}`}</p>}
           <button onClick={(e)=>childGotOnBus()}>Child got on bus</button>
-          <button>Child got off bus</button>
-          <button>Child got to class</button>
-          <button>Child got out of class</button>
+          <button onClick={(e)=>childGotOffBus()}>Child got off bus</button>
+          <button onClick={(e)=>childGotToClass()}>Child got to class</button>
+          <button onClick={(e)=>childGotOutOfClass()}>Child got out of class</button>
 
         </div>
 
