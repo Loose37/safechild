@@ -51,7 +51,7 @@ const {user,setUser,role,setRole,allRoles} = props
       navigate("/parents");
     }
     if (!role){
-      console.log ("No role assigned!")
+      navigate ("/")
     }
   };
    
