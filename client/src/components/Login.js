@@ -104,6 +104,7 @@ const {user,setUser,role,setRole,allRoles} = props
             <button onClick={(e)=>{
               login();
               handleNavigation();
+            
             }}
             > Login </button>
           </div>

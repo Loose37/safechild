@@ -53,11 +53,41 @@ function setupServer () {
       ? res.status(200).send(routes)
       :res.status(400).send("no routes found")
     }catch(error){
-      res.status(500).send(err);
+      res.status(500).send(error);
     }
   });
 
 
+  app.post("/singlechild", async (req,res) => {
+    try {
+      const id = req.body.id
+      const fetchedChild = await db("students")
+      .where({student_unique_ID:id}) 
+      .select("*")
+      res.status(200).send(fetchedChild)
+      console.log (fetchedChild)
+    } catch (error) {
+      console.log (error)
+    }
+  })
+
+  app.post("/history", async (req, res) => {
+    try {
+      const id = req.body.id;
+      const route = req.body.route;
+      if (route === "route_1"){
+        const fetchedEvents = await db("route_1_events")
+        .where({student_unique_ID:id})
+        .select("*")
+        res.status(200).send(fetchedEvents)
+        console.log (fetchedEvents)
+      }
+      
+    } catch (error) {
+      console.log (error)
+      res.status(500).send(error)
+    }
+  })
 
   app.post("/children", async (req,res) => {
     try{
